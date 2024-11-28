@@ -1,0 +1,16 @@
+global using Ardalis.Specification;
+global using FluentValidation;
+global using TD.KCN.WebApi.Application.Common.Exceptions;
+global using TD.KCN.WebApi.Application.Common.Interfaces;
+global using TD.KCN.WebApi.Application.Common.Models;
+global using TD.KCN.WebApi.Application.Common.Persistence;
+global using TD.KCN.WebApi.Application.Common.Specification;
+global using TD.KCN.WebApi.Application.Common.Validation;
+global using TD.KCN.WebApi.Domain.Catalog;
+global using TD.KCN.WebApi.Domain.Common;
+global using TD.KCN.WebApi.Domain.House;
+global using TD.KCN.WebApi.Domain.Common.Contracts;
+global using TD.KCN.WebApi.Shared.Notifications;
+global using MediatR;
+global using Microsoft.Extensions.Localization;
+global using Microsoft.Extensions.Logging;

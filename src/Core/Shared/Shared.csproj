@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>TD.KCN.WebApi.Shared</RootNamespace>
+        <AssemblyName>TD.KCN.WebApi.Shared</AssemblyName>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Update="Roslynator.Analyzers" Version="4.11.0">
+            <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+</Project>

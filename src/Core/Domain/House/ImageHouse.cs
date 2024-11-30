@@ -15,9 +15,10 @@ public class ImageHouse : AuditableEntity, IAggregateRoot
         MotelId = motelId;
     }
 
-    public ImageHouse Update(string? image)
+    public ImageHouse Update(string? image, Guid? motelId)
     {
         Image = image ?? Image;
+        MotelId = motelId ?? MotelId;
 
         return this;
     }

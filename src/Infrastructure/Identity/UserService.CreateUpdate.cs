@@ -114,7 +114,7 @@ internal partial class UserService
                     Gender = request.Gender,
                     DateOfBirth = request.DateOfBirth,
                     Address = request.Address,
-                    ImageUrl = request.ImageUrl,
+                    ImageUrl = "https://phunuvietnam.mediacdn.vn/media/news/33abffcedac43a654ac7f501856bf700/anh-profile-tiet-lo-g-ve-ban-1.jpg",
                     Email = request.Email,
                     PhoneNumber = request.PhoneNumber,
                     UserName = request.UserName,

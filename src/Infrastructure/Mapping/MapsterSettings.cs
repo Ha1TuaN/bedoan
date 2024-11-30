@@ -1,4 +1,6 @@
 ﻿using Mapster;
+using TD.KCN.WebApi.Application.House.Motels;
+using TD.KCN.WebApi.Domain.House;
 namespace TD.KCN.WebApi.Infrastructure.Mapping;
 
 public class MapsterSettings
@@ -10,9 +12,9 @@ public class MapsterSettings
 
         // This one is actually not necessary as it's mapped by convention
         // TypeAdapterConfig<Product, ProductDto>.NewConfig().Map(dest => dest.BrandName, src => src.Brand.Name);
-        //TypeAdapterConfig<LaborAgreement, LaborAgreementDto>
+        //TypeAdapterConfig<Motel, MotelDto>
         //    .NewConfig()
-        //    .Map(dest => dest.IndustrialParkName, src => src.Company.IndustrialPark.Name);
+        //    .Map(dest => dest.UserAvatar, src => src..IndustrialPark.Name);
 
         //TypeAdapterConfig<OvertimeRegister, OvertimeRegisterDto>
         //    .NewConfig()

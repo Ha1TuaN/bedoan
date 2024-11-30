@@ -4,6 +4,8 @@ public class UpdateImageHouseRequest : IRequest<Result<Guid>>
 {
     public Guid Id { get; set; }
     public string? Image { get; set; }
+    public Guid? MotelId { get; set; }
+
 }
 
 public class UpdateImageHouseRequestValidator : CustomValidator<UpdateImageHouseRequest>
@@ -30,7 +32,7 @@ public class UpdateImageHouseRequestHandler : IRequestHandler<UpdateImageHouseRe
 
         _ = item ?? throw new NotFoundException(string.Format(_localizer["ImageHouse.notfound"], request.Id));
 
-        item.Update(request.Image);
+        item.Update(request.Image, request.MotelId);
 
         await _repository.UpdateAsync(item, cancellationToken);
 

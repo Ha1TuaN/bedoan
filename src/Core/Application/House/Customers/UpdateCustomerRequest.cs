@@ -4,7 +4,11 @@ public class UpdateCustomerRequest : IRequest<Result<Guid>>
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
-    public string? PhoneNumber { get; set; } 
+    public string? PhoneNumber { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public string? File {  get; set; }
+
 }
 
 public class UpdateCustomerRequestValidator : CustomValidator<UpdateCustomerRequest>
@@ -31,7 +35,7 @@ public class UpdateCustomerRequestHandler : IRequestHandler<UpdateCustomerReques
 
         _ = item ?? throw new NotFoundException(string.Format(_localizer["Customer.notfound"], request.Id));
 
-        item.Update(request.Name, request.PhoneNumber);
+        item.Update(request.Name, request.PhoneNumber, request.StartDate, request.EndDate, request.File);
 
         await _repository.UpdateAsync(item, cancellationToken);
 

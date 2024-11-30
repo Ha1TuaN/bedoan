@@ -23,5 +23,8 @@ public class MotelDto : IDto
     public decimal? Area { get; set; }
     public int? BedroomCount { get; set; }
     public int? BathroomCount { get; set; }
+    public decimal? Lat { get; set; }
+    public decimal? Lng { get; set; }
+    public string? Status { get; set; }
     public List<ImageHouseDto>? ImageHouses { get; set; }
 }

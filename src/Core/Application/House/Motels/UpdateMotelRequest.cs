@@ -23,7 +23,7 @@ public class UpdateMotelRequest : IRequest<Result<Guid>>
     public int? BathroomCount { get; set; }
     public decimal? Lat { get; set; }
     public decimal? Lng { get; set; }
-    public List<UpdateImageHouseRequest>? ImageHouseRequests { get; set; }
+    public List<UpdateImageHouseRequest>? ImageHouses { get; set; }
     public List<UpdateFeatureHouseRequest>? FeatureHouseRequests { get; set; }
 }
 
@@ -73,19 +73,19 @@ public class UpdateMotelRequestHandler : IRequestHandler<UpdateMotelRequest, Res
             request.Lng);
 
         await _repository.UpdateAsync(item, cancellationToken);
-        if (request.ImageHouseRequests != null && request.ImageHouseRequests.Count > 0)
+        if (request.ImageHouses != null && request.ImageHouses.Count > 0)
         {
             var allImg = await _repositoryImg.ListAsync(cancellationToken);
             var lstOldImg = allImg.Where(x => x.MotelId == request.Id).ToList();
-            var itemDeleteImg = lstOldImg.Where(x => !request.ImageHouseRequests.Any(y => y.Id != null && y.Id == x.Id)).ToList();
+            var itemDeleteImg = lstOldImg.Where(x => !request.ImageHouses.Any(y => y.Id != null && y.Id == x.Id)).ToList();
             if (itemDeleteImg != null && itemDeleteImg.Count > 0)
                 await _repositoryImg.DeleteRangeAsync(itemDeleteImg);
-            foreach (var img in request.ImageHouseRequests)
+            foreach (var img in request.ImageHouses)
             {
                 var old = await _repositoryImg.GetByIdAsync(img.Id);
                 if (old != null)
                 {
-                    old.Update(img.Image);
+                    old.Update(img.Image, request.Id);
                     await _repositoryImg.UpdateAsync(old, cancellationToken);
                 }
                 else
@@ -112,20 +112,22 @@ public class UpdateMotelRequestHandler : IRequestHandler<UpdateMotelRequest, Res
             var itemDeleteFeature = lstOldFeature.Where(x => !request.FeatureHouseRequests.Any(y => y.Id != null && y.Id == x.Id)).ToList();
             if (itemDeleteFeature != null && itemDeleteFeature.Count > 0)
                 await _repositoryFeature.DeleteRangeAsync(itemDeleteFeature);
-            foreach (var feature in request.FeatureHouseRequests)
+            foreach (var img in request.ImageHouses)
             {
-                var old = await _repositoryFeature.GetByIdAsync(feature.Id);
-                if (old != null)
+                if (img.Id == null) // Thêm ảnh mới
                 {
-                    old.Update(feature.Name);
-                    await _repositoryFeature.UpdateAsync(old, cancellationToken);
+                    await _repositoryImg.AddAsync(
+                        new ImageHouse(img.Image, request.Id), cancellationToken);
                 }
                 else
                 {
-                    await _repositoryFeature.AddAsync(
-                        new FeatureHouse(feature.Name, request.Id), cancellationToken);
+                    var old = await _repositoryImg.GetByIdAsync(img.Id);
+                    if (old != null)
+                    {
+                        old.Update(img.Image, request.Id);
+                        await _repositoryImg.UpdateAsync(old, cancellationToken);
+                    }
                 }
-
             }
         }
         else
@@ -136,6 +138,7 @@ public class UpdateMotelRequestHandler : IRequestHandler<UpdateMotelRequest, Res
                 await _repositoryFeature.DeleteRangeAsync(listDeleteFeature);
             }
         }
+
         return Result<Guid>.Success(request.Id);
     }
 

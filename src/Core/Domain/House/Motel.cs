@@ -22,6 +22,7 @@ public class Motel : AuditableEntity, IAggregateRoot
     public int BathroomCount { get; set; } = default!;
     public decimal? Lat { get; set; }
     public decimal? Lng { get; set; }
+    public string? Status { get; set; }
     public virtual List<ImageHouse> ImageHouses { get; set; }
 
     public Motel (
@@ -59,6 +60,7 @@ public class Motel : AuditableEntity, IAggregateRoot
         UserFullName = userFullName;
         Lat = lat;
         Lng = lng;
+        Status = "Chưa thuê";
     }
 
     public Motel Update(
@@ -88,6 +90,11 @@ public class Motel : AuditableEntity, IAggregateRoot
         Lat = lat ?? Lat;
         Lng = lng ?? Lng;
 
+        return this;
+    }
+    public Motel UpdateHopDong()
+    {
+        Status = "Đang được thuê";
         return this;
     }
 }

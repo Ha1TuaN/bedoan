@@ -15,15 +15,6 @@ public class ApplicationUser : IdentityUser
     public string? RefreshToken { get; set; }
     public DateTime RefreshTokenExpiryTime { get; set; }
     public string? ObjectId { get; set; }
-
-    /// <summary>
-    /// Loại người dùng
-    /// 0: Quản trị viên
-    /// 1: Doanh nghiệp
-    /// 2: Lãnh đạo
-    /// 3: Chuyên viên.
-    /// </summary>
-    public virtual Motel? Motel { get; set; }
     public int? Type { get; set; }
     public string? Status { get; set; }
     public DateTime? CreatedOn { get; set; }

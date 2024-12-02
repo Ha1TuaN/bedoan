@@ -21,7 +21,7 @@ public class CustomersController : VersionedApiController
     }
 
     [HttpPost]
-    [MustHavePermission(TDAction.Manage, TDResource.Customers)]
+    [AllowAnonymous]
     [OpenApiOperation("Tạo mới địa bàn.", "")]
     public Task<Result<Guid>> CreateAsync(CreateCustomerRequest request)
     {
@@ -29,7 +29,7 @@ public class CustomersController : VersionedApiController
     }
 
     [HttpPut("{id:guid}")]
-    [MustHavePermission(TDAction.Manage, TDResource.Customers)]
+    [AllowAnonymous]
     [OpenApiOperation("Cập nhật địa bàn.", "")]
     public async Task<ActionResult<Guid>> UpdateAsync(UpdateCustomerRequest request, Guid id)
     {
@@ -39,7 +39,7 @@ public class CustomersController : VersionedApiController
     }
 
     [HttpDelete("{id:guid}")]
-    [MustHavePermission(TDAction.Manage, TDResource.Customers)]
+    [AllowAnonymous]
     [OpenApiOperation("Xóa địa bàn.", "")]
     public Task<Result<Guid>> DeleteAsync(Guid id)
     {

@@ -4,7 +4,7 @@ namespace TD.KCN.WebApi.Application.House.Customers;
 
 public class SearchCustomersRequest : PaginationFilter, IRequest<PaginationResponse<CustomerDto>>
 {
-
+    public Guid? ModelId { get; set; }
 }
 
 public class CustomersBySearchRequestSpec : EntitiesByPaginationFilterSpec<Customer, CustomerDto>
@@ -12,7 +12,8 @@ public class CustomersBySearchRequestSpec : EntitiesByPaginationFilterSpec<Custo
     public CustomersBySearchRequestSpec(SearchCustomersRequest request)
         : base(request) =>
         Query
-            .OrderBy(c => c.Name, !request.HasOrderBy());
+            .OrderBy(c => c.Name, !request.HasOrderBy())
+            .Where(c => c.MotelId == request.ModelId, request.ModelId.HasValue);
 }
 
 public class SearchCategoriesRequestHandler : IRequestHandler<SearchCustomersRequest, PaginationResponse<CustomerDto>>

@@ -10,9 +10,6 @@ public class UserListFilterSpec : EntitiesByBaseFilterSpec<ApplicationUser>
         : base(request)
     {
 
-        Query
-            .Where(p => p.IsActive == request.IsActive, request.IsActive.HasValue)
-        ;
     }
 
     public static DateTime GetDateZeroTime(DateTime date)

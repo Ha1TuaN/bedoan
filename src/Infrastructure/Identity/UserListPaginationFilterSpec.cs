@@ -9,9 +9,7 @@ public class UserListPaginationFilterSpec : EntitiesByPaginationFilterSpec<Appli
     public UserListPaginationFilterSpec(UserListFilter request)
         : base(request)
     {
-        Query
-            .Where(p => p.IsActive == request.IsActive, request.IsActive.HasValue)
-        ;
+
     }
 
     public static DateTime GetDateZeroTime(DateTime date)

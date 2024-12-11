@@ -1,6 +1,7 @@
 ﻿using System.Xml.Linq;
 using TD.KCN.WebApi.Domain.Identity;
 
+
 namespace TD.KCN.WebApi.Domain.House;
 public class Motel : AuditableEntity, IAggregateRoot
 {
@@ -13,9 +14,6 @@ public class Motel : AuditableEntity, IAggregateRoot
     public virtual Area? District { get; set; }
     public string? Description { get; set; }
     public string? UserId { get; set; }
-    public string? UserFullName { get; set; }
-    public string? UserAvatar { get; set; }
-    public string? UserPhone { get; set; }
     public decimal? Price { get; set; } = default!;
     public decimal? Area { get; set; } = default!;
     public int BedroomCount { get; set; } = default!;
@@ -33,9 +31,6 @@ public class Motel : AuditableEntity, IAggregateRoot
         Guid districtId,
         string? description,
         string? userId,
-        string? userFullName,
-        string? userAvatar,
-        string? userPhone,
         decimal? price,
         decimal? area,
         int bedroomCount,
@@ -55,9 +50,6 @@ public class Motel : AuditableEntity, IAggregateRoot
         Area = area;
         BedroomCount = bedroomCount;
         BathroomCount = bathroomCount;
-        UserAvatar = userAvatar;
-        UserPhone = userPhone;
-        UserFullName = userFullName;
         Lat = lat;
         Lng = lng;
         Status = "Chưa thuê";

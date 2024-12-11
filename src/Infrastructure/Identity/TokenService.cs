@@ -60,11 +60,6 @@ internal class TokenService : ITokenService
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        if (!user.IsActive)
-        {
-            throw new UnauthorizedException(_t["User Not Active. Please contact the administrator."]);
-        }
-
         if (_securitySettings.RequireConfirmedAccount && !user.EmailConfirmed)
         {
             throw new UnauthorizedException(_t["E-Mail not confirmed."]);
@@ -96,11 +91,6 @@ internal class TokenService : ITokenService
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        if (user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-        {
-            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
-        }
-
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
@@ -108,12 +98,10 @@ internal class TokenService : ITokenService
     {
         string token = GenerateJwt(user, ipAddress);
 
-        user.RefreshToken = GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(_jwtSettings.RefreshTokenExpirationInDays);
 
         await _userManager.UpdateAsync(user);
 
-        return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
+        return new TokenResponse(token);
     }
 
     private string GenerateJwt(ApplicationUser user, string ipAddress) =>

@@ -99,7 +99,6 @@ internal class ApplicationDbSeeder
                 PhoneNumberConfirmed = true,
                 NormalizedEmail = _currentTenant.AdminEmail?.ToUpperInvariant(),
                 NormalizedUserName = adminUserName.ToUpperInvariant(),
-                IsActive = true
             };
 
             _logger.LogInformation("Seeding Default Admin User for '{tenantId}' Tenant.", _currentTenant.Id);

@@ -1,3 +1,5 @@
+using TD.KCN.WebApi.Application.Identity.Users;
+
 namespace TD.KCN.WebApi.Application.House.Motels;
 
 public class SearchMotelsRequest : PaginationFilter, IRequest<PaginationResponse<MotelDto>>
@@ -9,6 +11,8 @@ public class SearchMotelsRequest : PaginationFilter, IRequest<PaginationResponse
     public List<decimal>? Area { get; set; }
     public List<int>? BedroomCount { get; set; }
     public List<int>? BathroomCount { get; set; }
+    public string? Status { get; set; }
+
 }
 
 public class MotelsBySearchRequestSpec : EntitiesByPaginationFilterSpec<Motel, MotelDto>
@@ -17,6 +21,7 @@ public class MotelsBySearchRequestSpec : EntitiesByPaginationFilterSpec<Motel, M
         : base(request)
     {
         Query.OrderBy(c => c.Title, !request.HasOrderBy())
+             .Where(c => c.Status == request.Status, !string.IsNullOrEmpty(request.Status))
              .Where(c => c.ProvinceId == request.ProvinceId, request.ProvinceId.HasValue)
              .Where(c => c.DistrictId == request.DistrictId, request.DistrictId.HasValue);
         if (request.Type != null && request.Type.Count > 0)
@@ -38,14 +43,18 @@ public class MotelsBySearchRequestSpec : EntitiesByPaginationFilterSpec<Motel, M
             Query.Where(c => c.Area >= minArea && c.Area <= maxArea);
         }
 
-        if (request.BathroomCount != null)
+        if (request.BathroomCount != null && request.BathroomCount.Count == 2)
         {
-            Query.Where(c => request.BathroomCount.Contains(c.BathroomCount));
+            decimal minBathroomCount = request.BathroomCount[0];
+            decimal maxBathroomCOunt = request.BathroomCount[1];
+            Query.Where(c => c.BathroomCount >= minBathroomCount && c.BathroomCount <= maxBathroomCOunt);
         }
 
-        if (request.BedroomCount != null)
+        if (request.BedroomCount != null && request.BedroomCount.Count == 2)
         {
-            Query.Where(c => request.BedroomCount.Contains(c.BedroomCount));
+            decimal minBedroomCount = request.BedroomCount[0];
+            decimal maxBedroomCOunt = request.BedroomCount[1];
+            Query.Where(c => c.BedroomCount >= minBedroomCount && c.BedroomCount <= maxBedroomCOunt);
         }
     }
 
@@ -54,14 +63,27 @@ public class MotelsBySearchRequestSpec : EntitiesByPaginationFilterSpec<Motel, M
 public class SearchMotelRequestHandler : IRequestHandler<SearchMotelsRequest, PaginationResponse<MotelDto>>
 {
     private readonly IReadRepository<Motel> _repository;
-
-    public SearchMotelRequestHandler(IReadRepository<Motel> repository) => _repository = repository;
+    private readonly IUserService _userService;
+    public SearchMotelRequestHandler(IReadRepository<Motel> repository, IUserService userService)
+    {
+        _repository = repository;
+        _userService = userService;
+    }
 
     public async Task<PaginationResponse<MotelDto>> Handle(SearchMotelsRequest request, CancellationToken cancellationToken)
     {
         var spec = new MotelsBySearchRequestSpec(request);
 
         var list = await _repository.ListAsync(spec, cancellationToken);
+
+        foreach (var item in list)
+        {
+            var user = await _userService.GetAsync(item.UserId, cancellationToken);
+            item.UserAvatar = user.ImageUrl;
+            item.UserPhone = user.PhoneNumber;
+            item.UserFullName = user.FullName;
+        }
+
         int count = await _repository.CountAsync(spec, cancellationToken);
 
         return new PaginationResponse<MotelDto>(list, count, request.PageNumber, request.PageSize);

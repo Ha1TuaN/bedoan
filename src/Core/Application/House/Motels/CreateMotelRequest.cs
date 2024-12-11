@@ -16,9 +16,6 @@ public class CreateMotelRequest : IRequest<Result<Guid>>
     public Guid DistrictId { get; set; }
     public string? Description { get; set; }
     public string? UserId { get; set; }
-    public string? UserFullName { get; set; }
-    public string? UserAvatar { get; set; }
-    public string? UserPhone { get; set; }
     public decimal? Price { get; set; }
     public decimal? Area { get; set; }
     public int BedroomCount { get; set; }
@@ -26,8 +23,6 @@ public class CreateMotelRequest : IRequest<Result<Guid>>
     public decimal? Lat { get; set; }
     public decimal? Lng { get; set; }
     public List<CreateImageHouseRequest>? ImageHouses { get; set; }
-    public List<CreateFeatureHousesRequest>? FeatureHouses { get; set; }
-
 }
 
 public class CreateMotelRequestValidator : CustomValidator<CreateMotelRequest>
@@ -66,9 +61,6 @@ public class CreateMotelRequestHandler : IRequestHandler<CreateMotelRequest, Res
             request.DistrictId,
             request.Description,
             request.UserId,
-            request.UserFullName,
-            request.UserAvatar,
-            request.UserPhone,
             request.Price,
             request.Area,
             request.BedroomCount,
@@ -82,14 +74,6 @@ public class CreateMotelRequestHandler : IRequestHandler<CreateMotelRequest, Res
             foreach (var img in request.ImageHouses)
             {
                 await _repositoryImg.AddAsync(new ImageHouse(img.Image, motel.Id), cancellationToken);
-            }
-        }
-
-        if (request.FeatureHouses != null)
-        {
-            foreach (var feature in request.FeatureHouses)
-            {
-                await _repositoryFeature.AddAsync(new FeatureHouse(feature.Name, motel.Id), cancellationToken);
             }
         }
 

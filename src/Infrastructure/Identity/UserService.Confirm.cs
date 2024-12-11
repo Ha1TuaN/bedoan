@@ -82,10 +82,8 @@ internal partial class UserService
         _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 
         user.ImageUrl = request.ImageUrl;
-        user.Gender = request.Gender;
         user.FullName = request.FullName;
         user.PhoneNumber = request.PhoneNumber;
-        user.Type = request.Type;
 
         string? phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (request.PhoneNumber != phoneNumber)

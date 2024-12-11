@@ -31,7 +31,7 @@ internal partial class UserService
             throw new InternalServerException(_t["Invalid objectId"]);
         }
 
-        var user = await _userManager.Users.Where(u => u.ObjectId == objectId).FirstOrDefaultAsync()
+        var user = await _userManager.Users.FirstOrDefaultAsync()
             ?? await CreateOrUpdateFromPrincipalAsync(principal);
 
         if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
@@ -54,7 +54,7 @@ internal partial class UserService
         }
 
         var user = await _userManager.FindByNameAsync(username);
-        if (user is not null && !string.IsNullOrWhiteSpace(user.ObjectId))
+        if (user is not null )
         {
             throw new InternalServerException(string.Format(_t["Username {0} is already taken."], username));
         }
@@ -62,7 +62,7 @@ internal partial class UserService
         if (user is null)
         {
             user = await _userManager.FindByEmailAsync(email);
-            if (user is not null && !string.IsNullOrWhiteSpace(user.ObjectId))
+            if (user is not null )
             {
                 throw new InternalServerException(string.Format(_t["Email {0} is already taken."], email));
             }
@@ -71,7 +71,6 @@ internal partial class UserService
         IdentityResult? result;
         if (user is not null)
         {
-            user.ObjectId = principal.GetObjectId();
             result = await _userManager.UpdateAsync(user);
 
             await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
@@ -80,14 +79,12 @@ internal partial class UserService
         {
             user = new ApplicationUser
             {
-                ObjectId = principal.GetObjectId(),
                 Email = email,
                 NormalizedEmail = email.ToUpperInvariant(),
                 UserName = username,
                 NormalizedUserName = username.ToUpperInvariant(),
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                IsActive = true
             };
             result = await _userManager.CreateAsync(user);
 
@@ -111,16 +108,11 @@ internal partial class UserService
                 var user = new ApplicationUser
                 {
                     FullName = request.FullName,
-                    Gender = request.Gender,
-                    DateOfBirth = request.DateOfBirth,
                     Address = request.Address,
                     ImageUrl = "https://phunuvietnam.mediacdn.vn/media/news/33abffcedac43a654ac7f501856bf700/anh-profile-tiet-lo-g-ve-ban-1.jpg",
                     Email = request.Email,
                     PhoneNumber = request.PhoneNumber,
                     UserName = request.UserName,
-                    IsActive = true,
-                    Type = request.Type,
-                    Status = request.Status,
                 };
                 var result = await _userManager.CreateAsync(user, request.Password);
                 if (!result.Succeeded)
@@ -166,14 +158,10 @@ internal partial class UserService
         _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 
         user.FullName = request.FullName;
-        user.Gender = request.Gender;
-        user.DateOfBirth = request.DateOfBirth;
         user.Address = request.Address;
         user.ImageUrl = request.ImageUrl;
         user.Email = request.Email;
         user.PhoneNumber = request.PhoneNumber;
-        user.Type = request.Type;
-        user.Status = request.Status;
         string? phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (request.PhoneNumber != phoneNumber)
         {

@@ -68,4 +68,12 @@ public class CustomerConfig : IEntityTypeConfiguration<Customer>
     }
 }
 
+public class MembershipConfig : IEntityTypeConfiguration<Membership>
+{
+    public void Configure(EntityTypeBuilder<Membership> builder)
+    {
+        builder.IsMultiTenant();
+        builder.ToTable("Memberships", SchemaNames.House);
+    }
+}
 

@@ -23,8 +23,10 @@ public class ApplicationDbContext : BaseDbContext
     #region House
     public DbSet<Motel> Motels => Set<Motel>();
     public DbSet<ImageHouse> ImageHouse => Set<ImageHouse>();
-    public DbSet<FeatureHouse> FeatureHouse => Set<FeatureHouse>(); 
+    public DbSet<FeatureHouse> FeatureHouse => Set<FeatureHouse>();
     public DbSet<Customer> Customer => Set<Customer>();
+    public DbSet<Membership> Membership => Set<Membership>();
+
     #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

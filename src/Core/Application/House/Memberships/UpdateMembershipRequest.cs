@@ -12,8 +12,9 @@ public class UpdateMembershipRequest : IRequest<Result<Guid>>
     public Guid Id { get; set; }
     public string Name { get; set; } = default!;
     public decimal Price { get; set; }
-    public string? MonthlyNewsletter { get; set; }
-    public string? Utilities { get; set; }
+    public int? CountPost { get; set; }
+    public bool? IsVip { get; set; }
+
 }
 
 public class UpdateMembershipRequestValidator : CustomValidator<UpdateMembershipRequest>
@@ -46,8 +47,8 @@ public class UpdateMembershipRequestHandler : IRequestHandler<UpdateMembershipRe
         item.Update(
            request.Name,
            request.Price,
-           request.MonthlyNewsletter,
-           request.Utilities);
+           request.CountPost,
+           request.IsVip);
 
         await _repository.UpdateAsync(item, cancellationToken);
 

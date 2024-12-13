@@ -10,7 +10,7 @@ public class UsersController : VersionNeutralApiController
     public UsersController(IUserService userService) => _userService = userService;
 
     [HttpPost("search")]
-    [MustHavePermission(TDAction.Manage, TDResource.Users)]
+    [AllowAnonymous]
     [OpenApiOperation("Search list of all users..", "")]
     public Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter request, CancellationToken cancellationToken)
     {
@@ -25,7 +25,7 @@ public class UsersController : VersionNeutralApiController
     }
 
     [HttpGet]
-    [MustHavePermission(TDAction.Manage, TDResource.Users)]
+    [AllowAnonymous]
     [OpenApiOperation("Get list of all users.", "")]
     public Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken)
     {
@@ -33,7 +33,7 @@ public class UsersController : VersionNeutralApiController
     }
 
     [HttpGet("{id}")]
-    [MustHavePermission(TDAction.Manage, TDResource.Users)]
+    [AllowAnonymous]
     [OpenApiOperation("Get a user's details.", "")]
     public Task<UserDetailsDto> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
@@ -172,7 +172,7 @@ public class UsersController : VersionNeutralApiController
     private string GetOriginFromRequest() => $"{Request.Scheme}://{Request.Host.Value}{Request.PathBase.Value}";
 
     [HttpDelete("{id}")]
-    [MustHavePermission(TDAction.Manage, TDResource.Users)]
+    [AllowAnonymous]
     [OpenApiOperation("Delete a user.", "")]
     public async Task<bool> DeleteByUserNameAsync(Guid id, CancellationToken cancellationToken)
     {

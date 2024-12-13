@@ -1,26 +1,24 @@
-﻿using System.Xml.Linq;
-
-namespace TD.KCN.WebApi.Domain.House;
+﻿namespace TD.KCN.WebApi.Domain.House;
 public class Membership : AuditableEntity, IAggregateRoot
 {
     public string Name { get; set; } = default!;
     public decimal Price { get; set; }
-    public string? MonthlyNewsletter { get; set; }
-    public string? Utilities { get; set; }
-    public Membership(string name, decimal price, string? monthlyNewsletter, string? utilities)
+    public int? CountPost { get; set; }
+    public bool? IsVip { get; set; }
+    public Membership(string name, decimal price, int? countPost, bool? isVip)
     {
         Name = name;
         Price = price;
-        MonthlyNewsletter = monthlyNewsletter;
-        Utilities = utilities;
+        CountPost = countPost;
+        IsVip = isVip;
     }
 
-    public Membership Update(string? name, decimal? price, string? monthlyNewsletter, string? utilities)
+    public Membership Update(string? name, decimal? price, int? countPost, bool? isVip)
     {
         Name = name ?? Name;
         Price = price ?? Price;
-        MonthlyNewsletter = monthlyNewsletter ?? MonthlyNewsletter;
-        Utilities = utilities ?? Utilities;
+        CountPost = countPost ?? CountPost;
+        IsVip = isVip ?? IsVip;
         return this;
     }
 

@@ -4,8 +4,9 @@ public class CreateMembershipRequest : IRequest<Result<Guid>>
 {
     public string Name { get; set; } = default!;
     public decimal Price { get; set; }
-    public string? MonthlyNewsletter { get; set; }
-    public string? Utilities { get; set; }
+    public int? CountPost { get; set; }
+    public bool? IsVip { get; set; }
+
 }
 
 public class CreateMembershipRequestValidator : CustomValidator<CreateMembershipRequest>
@@ -32,8 +33,8 @@ public class CreateMembershipRequestHandler : IRequestHandler<CreateMembershipRe
         var membership = new Membership(
            request.Name,
            request.Price,
-           request.MonthlyNewsletter,
-           request.Utilities);
+           request.CountPost,
+           request.IsVip);
         await _repository.AddAsync(membership, cancellationToken);
 
         return Result<Guid>.Success(membership.Id);

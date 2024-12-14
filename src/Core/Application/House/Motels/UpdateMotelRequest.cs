@@ -10,7 +10,6 @@ namespace TD.KCN.WebApi.Application.House.Motels;
 public class UpdateMotelRequest : IRequest<Result<Guid>>
 {
     public Guid Id { get; set; }
-    public string? Title { get; set; }
     public string? Address { get; set; }
     public string? Type { get; set; }
     public Guid? ProvinceId { get; set; }
@@ -25,6 +24,7 @@ public class UpdateMotelRequest : IRequest<Result<Guid>>
     public decimal? Lng { get; set; }
     public List<UpdateImageHouseRequest>? ImageHouses { get; set; }
     public List<UpdateFeatureHouseRequest>? FeatureHouseRequests { get; set; }
+    public string? Features { get; set; }
 }
 
 public class UpdateMotelRequestValidator : CustomValidator<UpdateMotelRequest>
@@ -59,7 +59,6 @@ public class UpdateMotelRequestHandler : IRequestHandler<UpdateMotelRequest, Res
         _ = item ?? throw new NotFoundException(string.Format(_localizer["Motel.notfound"], request.Id));
 
         item.Update(
-            request.Title,
             request.Address,
             request.Type,
             request.ProvinceId,
@@ -70,7 +69,8 @@ public class UpdateMotelRequestHandler : IRequestHandler<UpdateMotelRequest, Res
             request.BedroomCount,
             request.BathroomCount,
             request.Lat,
-            request.Lng);
+            request.Lng,
+            request.Features);
 
         await _repository.UpdateAsync(item, cancellationToken);
         if (request.ImageHouses != null && request.ImageHouses.Count > 0)
@@ -102,40 +102,6 @@ public class UpdateMotelRequestHandler : IRequestHandler<UpdateMotelRequest, Res
             if (listDeleteImg != null && listDeleteImg.Count > 0)
             {
                 await _repositoryImg.DeleteRangeAsync(listDeleteImg);
-            }
-        }
-
-        if (request.FeatureHouseRequests != null && request.FeatureHouseRequests.Count > 0)
-        {
-            var allFeatures = await _repositoryFeature.ListAsync(cancellationToken);
-            var lstOldFeature = allFeatures.Where(x => x.MotelId == request.Id).ToList();
-            var itemDeleteFeature = lstOldFeature.Where(x => !request.FeatureHouseRequests.Any(y => y.Id != null && y.Id == x.Id)).ToList();
-            if (itemDeleteFeature != null && itemDeleteFeature.Count > 0)
-                await _repositoryFeature.DeleteRangeAsync(itemDeleteFeature);
-            foreach (var img in request.ImageHouses)
-            {
-                if (img.Id == null) // Thêm ảnh mới
-                {
-                    await _repositoryImg.AddAsync(
-                        new ImageHouse(img.Image, request.Id), cancellationToken);
-                }
-                else
-                {
-                    var old = await _repositoryImg.GetByIdAsync(img.Id);
-                    if (old != null)
-                    {
-                        old.Update(img.Image, request.Id);
-                        await _repositoryImg.UpdateAsync(old, cancellationToken);
-                    }
-                }
-            }
-        }
-        else
-        {
-            var listDeleteFeature = _repositoryFeature.ListAsync(cancellationToken).Result.Where(x => x.MotelId == request.Id).ToList();
-            if (listDeleteFeature != null && listDeleteFeature.Count > 0)
-            {
-                await _repositoryFeature.DeleteRangeAsync(listDeleteFeature);
             }
         }
 

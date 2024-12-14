@@ -12,7 +12,7 @@ public class SearchMotelsRequest : PaginationFilter, IRequest<PaginationResponse
     public List<int>? BedroomCount { get; set; }
     public List<int>? BathroomCount { get; set; }
     public string? Status { get; set; }
-
+    public bool? IsVip { get; set; }
 }
 
 public class MotelsBySearchRequestSpec : EntitiesByPaginationFilterSpec<Motel, MotelDto>
@@ -20,10 +20,11 @@ public class MotelsBySearchRequestSpec : EntitiesByPaginationFilterSpec<Motel, M
     public MotelsBySearchRequestSpec(SearchMotelsRequest request)
         : base(request)
     {
-        Query.OrderBy(c => c.Title, !request.HasOrderBy())
+        Query.OrderBy(c => c.Address, !request.HasOrderBy())
              .Where(c => c.Status == request.Status, !string.IsNullOrEmpty(request.Status))
              .Where(c => c.ProvinceId == request.ProvinceId, request.ProvinceId.HasValue)
-             .Where(c => c.DistrictId == request.DistrictId, request.DistrictId.HasValue);
+             .Where(c => c.DistrictId == request.DistrictId, request.DistrictId.HasValue)
+             .Where(c => c.IsVip == request.IsVip, request.IsVip.HasValue);
         if (request.Type != null && request.Type.Count > 0)
         {
             Query.Where(c => request.Type.Contains(c.Type));

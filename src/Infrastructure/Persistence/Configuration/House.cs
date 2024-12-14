@@ -11,7 +11,6 @@ public class MotelConfig : IEntityTypeConfiguration<Motel>
     public void Configure(EntityTypeBuilder<Motel> builder)
     {
         builder.IsMultiTenant();
-        builder.Property(b => b.Title).HasMaxLength(1024);
         builder.ToTable("Motels", SchemaNames.House);
 
         builder.HasOne(h => h.Province)

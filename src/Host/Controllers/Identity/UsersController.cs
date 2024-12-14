@@ -185,4 +185,18 @@ public class UsersController : VersionNeutralApiController
     {
         return _userService.UpdateByUserIdAsync(request, id);
     }
+
+    [HttpPut("UpdateCoutNormal/{userId}")]
+    [OpenApiOperation("Edit user.", "")]
+    public Task UpdateCoutNormal(int count, string userId)
+    {
+        return _userService.UpdateCoutNormal(count, userId);
+    }
+
+    [HttpPut("UpdateCoutVip/{userId}")]
+    [OpenApiOperation("Edit user.", "")]
+    public Task UpdateCoutVip(int count, string userId)
+    {
+        return _userService.UpdateCoutVip(count, userId);
+    }
 }

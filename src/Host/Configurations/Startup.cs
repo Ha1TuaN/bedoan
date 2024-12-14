@@ -37,6 +37,7 @@ internal static class Startup
                 .AddJsonFile($"{configurationsDirectory}/minio.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/minio.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/report.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"{configurationsDirectory}/vnpay.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/report.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
         return builder;

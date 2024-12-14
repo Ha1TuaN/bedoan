@@ -11,4 +11,6 @@ public class ApplicationUser : IdentityUser
     public string? ImageUrl { get; set; }
     public DateTime? CreatedOn { get; set; }
     public Guid? MotelId { get; set; }
+    public int? CountNormal { get; set; }
+    public int? CountVip { get; set; }
 }

@@ -5,7 +5,6 @@ using TD.KCN.WebApi.Domain.Identity;
 namespace TD.KCN.WebApi.Domain.House;
 public class Motel : AuditableEntity, IAggregateRoot
 {
-    public string Title { get; set; } = default!;
     public string Address { get; set; } = default!;
     public string Type { get; set; } = default!;
     public Guid ProvinceId { get; set; }
@@ -13,7 +12,7 @@ public class Motel : AuditableEntity, IAggregateRoot
     public Guid DistrictId { get; set; }
     public virtual Area? District { get; set; }
     public string? Description { get; set; }
-    public string? UserId { get; set; }
+    public string UserId { get; set; } = default!;
     public decimal? Price { get; set; } = default!;
     public decimal? Area { get; set; } = default!;
     public int BedroomCount { get; set; } = default!;
@@ -22,24 +21,26 @@ public class Motel : AuditableEntity, IAggregateRoot
     public decimal? Lng { get; set; }
     public string? Status { get; set; }
     public virtual List<ImageHouse> ImageHouses { get; set; }
+    public bool IsVip { get; set; }
+    public string? Features { get; set; }
 
     public Motel (
-        string title,
         string address,
         string type,
         Guid provinceId,
         Guid districtId,
         string? description,
-        string? userId,
+        string userId,
         decimal? price,
         decimal? area,
         int bedroomCount,
         int bathroomCount,
         decimal? lat,
-        decimal? lng
+        decimal? lng,
+        bool isVip,
+        string? features
     )
     {
-        Title = title;
         Address = address;
         Type = type;
         ProvinceId = provinceId;
@@ -53,10 +54,11 @@ public class Motel : AuditableEntity, IAggregateRoot
         Lat = lat;
         Lng = lng;
         Status = "Chưa thuê";
+        IsVip = isVip;
+        Features = features;
     }
 
     public Motel Update(
-        string? title,
         string? address,
         string? type,
         Guid? provinceId,
@@ -67,9 +69,9 @@ public class Motel : AuditableEntity, IAggregateRoot
         int? bedroomCount,
         int? bathroomCount,
         decimal? lat,
-        decimal? lng)
+        decimal? lng,
+        string? features)
     {
-        Title = title ?? Title;
         Address = address ?? Address;
         Type = type ?? Type;
         ProvinceId = provinceId ?? ProvinceId;
@@ -81,6 +83,7 @@ public class Motel : AuditableEntity, IAggregateRoot
         BathroomCount = bathroomCount ?? BathroomCount;
         Lat = lat ?? Lat;
         Lng = lng ?? Lng;
+        Features = features ?? Features;
 
         return this;
     }

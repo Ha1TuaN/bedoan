@@ -179,4 +179,72 @@ internal partial class UserService
             throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
         }
     }
+
+    public async Task UpdateCoutNormal(int count, string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        _ = user ?? throw new NotFoundException(_t["User Not Found."]);
+        if (user.CountNormal == null)
+        {
+            user.CountNormal = 0;
+        }
+
+        user.CountNormal = user.CountNormal + count;
+        var result = await _userManager.UpdateAsync(user);
+        await _signInManager.RefreshSignInAsync(user);
+        await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
+        if (!result.Succeeded)
+        {
+            throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
+        }
+    }
+
+    public async Task UpdateCoutVip(int count, string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        _ = user ?? throw new NotFoundException(_t["User Not Found."]);
+        if (user.CountVip == null)
+        {
+            user.CountVip = 0;
+        }
+
+        user.CountVip = user.CountVip + count;
+        var result = await _userManager.UpdateAsync(user);
+        await _signInManager.RefreshSignInAsync(user);
+        await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
+        if (!result.Succeeded)
+        {
+            throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
+        }
+    }
+
+    public async Task MinusMemberNormal(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        _ = user ?? throw new NotFoundException(_t["User Not Found."]);
+       
+        user.CountNormal = user.CountNormal - 1;
+        var result = await _userManager.UpdateAsync(user);
+        await _signInManager.RefreshSignInAsync(user);
+        await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
+        if (!result.Succeeded)
+        {
+            throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
+        }
+    }
+
+    public async Task MinusMemberVip(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        _ = user ?? throw new NotFoundException(_t["User Not Found."]);
+
+        user.CountVip = user.CountVip - 1;
+        var result = await _userManager.UpdateAsync(user);
+        await _signInManager.RefreshSignInAsync(user);
+        await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
+        if (!result.Succeeded)
+        {
+            throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
+        }
+    }
 }

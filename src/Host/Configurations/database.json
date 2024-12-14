@@ -1,6 +1,6 @@
 {
   "DatabaseSettings": {
     "DBProvider": "mssql",
-    "ConnectionString": "Data Source=HA1TUAN\\SQLEXPRESS;Initial Catalog=RentHome_context;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True"
+    "ConnectionString": "Data Source=DESKTOP-TECHGRF\\SQLEXPRESS;Initial Catalog=RentHome_context;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True"
   }
 }

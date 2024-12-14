@@ -27,4 +27,6 @@ public class MotelDto : IDto
     public decimal? Lng { get; set; }
     public string? Status { get; set; }
     public List<ImageHouseDto>? ImageHouses { get; set; }
+    public bool? IsVip { get; set; }
+    public string? Features { get; set; }
 }

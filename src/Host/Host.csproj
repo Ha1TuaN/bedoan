@@ -66,4 +66,11 @@
     <ItemGroup>
       <Folder Include="Uploads\" />
     </ItemGroup>
+    <ItemGroup>
+      <Content Update="Configurations\vnpay.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
 </Project>

@@ -14,10 +14,6 @@ public class UserDetailsDto
     public string? PhoneNumber { get; set; }
     public string? ImageUrl { get; set; }
     public List<string>? Permissions { get; set; }
-    public Guid? OrganizationUnitId { get; set; }
-    public string? OrganizationUnitName { get; set; }
-    public Guid? CompanyId { get; set; }
-    public string? JobTitle { get; set; }
-    public int? Type { get; set; }
-    public string? Status { get; set; }
+    public int? CountNormal { get; set; }
+    public int? CountVip { get; set; }
 }

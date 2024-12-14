@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TD.KCN.WebApi.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using TD.KCN.WebApi.Infrastructure.Persistence.Context;
 namespace Migrators.MSSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241213171022_InitialMigrationszxcvbnm")]
+    partial class InitialMigrationszxcvbnm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -610,12 +613,6 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Property<Guid>("DistrictId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Features")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsVip")
-                        .HasColumnType("bit");
-
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -642,12 +639,16 @@ namespace Migrators.MSSQL.Migrations.Application
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
